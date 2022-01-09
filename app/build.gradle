@@ -1,0 +1,96 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+apply plugin: "kotlin-kapt"
+
+android {
+    compileSdkVersion 31
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "me.lijiahui.androidapp"
+        minSdkVersion 23
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                cppFlags ''
+            }
+        }
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    packagingOptions {
+        exclude 'META-INF/atomicfu.kotlin_module'
+    }
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+            version '3.10.2'
+        }
+    }
+}
+
+dependencies {
+    // Lottie
+    def lottieVersion = "4.2.2"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    // Room
+    implementation "androidx.room:room-runtime:$version_room"
+    implementation "androidx.room:room-ktx:$version_room"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    kapt "androidx.room:room-compiler:$version_room"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
+    implementation 'androidx.core:core-ktx:1.7.0'
+
+    implementation "androidx.appcompat:appcompat:$rootProject.version_appCompat"
+    implementation "androidx.activity:activity-ktx:$rootProject.version_activity"
+
+    // kotlin components
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.version_coroutines"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.version_coroutines"
+
+    // UI
+    implementation "com.google.android.material:material:$rootProject.version_material"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.version_constrainedLayout"
+
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.version_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$rootProject.version_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.version_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.version_lifecycle"
+
+    // Google Play Api
+    implementation "com.android.installreferrer:installreferrer:2.2"
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
