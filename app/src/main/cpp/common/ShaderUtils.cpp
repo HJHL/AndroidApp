@@ -28,26 +28,7 @@ unsigned int ShaderUtils::LoadShader(const char *source, GLenum type) {
     glShaderSource(shaderHandle, 1, &source, nullptr);
     glCompileShader(shaderHandle);
 #ifdef DEBUG
-    // 检查 glCompileShader 状态
-    // 建议当 shaderHandle 为 0 时打开，一般是 source 代码存在问题，或者是 type 类型不对
-    GLint compiledStatus = 0;
-    glGetShaderiv(shaderHandle, GL_COMPILE_STATUS, &compiledStatus);
-    if (!compiledStatus) {
-        ALOGE("compile shader failed");
-        GLint msgLength = 0;
-        glGetShaderiv(shaderHandle, GL_INFO_LOG_LENGTH, &msgLength);
-        if (msgLength) {
-            char *buf = (char *) malloc((size_t) msgLength);
-            if (buf) {
-                glGetShaderInfoLog(shaderHandle, msgLength, nullptr, buf);
-                ALOGE("compile shader info %s", buf);
-                free(buf);
-                buf = nullptr;
-            }
-        } else {
-            ALOGE("get info length failed");
-        }
-    }
+    checkShaderInfo(shaderHandle, GL_COMPILE_STATUS, "Compile shader");
 #endif
     return shaderHandle;
 }
@@ -73,24 +54,7 @@ unsigned int ShaderUtils::CreateProgram(const unsigned int vertexShader,
 #endif
     glLinkProgram(programHandle);
 #ifdef DEBUG
-    // 检查 glLinkProgram 状态
-    GLint linkStatus = 0;
-    glGetProgramiv(programHandle, GL_LINK_STATUS, &linkStatus);
-    if (linkStatus != GL_TRUE) {
-        GLint msgLength = 0;
-        glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &msgLength);
-        if (msgLength) {
-            char *msgBuffer = (char *) malloc((size_t) msgLength);
-            if (msgBuffer) {
-                glGetProgramInfoLog(programHandle, msgLength, nullptr, msgBuffer);
-                ALOGE("link program failed, msg: %d", msgBuffer);
-                free(msgBuffer);
-                msgBuffer = nullptr;
-            }
-        } else {
-            ALOGE("get link info log length failed");
-        }
-    }
+    checkProgramInfo(programHandle, GL_LINK_STATUS, "Link Program");
 #endif
     return programHandle;
 }
@@ -133,4 +97,66 @@ void ShaderUtils::checkError(const char *operation) {
         }
         count++;
     }
+}
+
+void ShaderUtils::checkShaderInfo(const unsigned int shader, const int type,
+                                  const std::string &operation) {
+    checkInfo(shader, type, operation, Shader);
+}
+
+void ShaderUtils::checkProgramInfo(const unsigned int program, const int type,
+                                   const std::string &operation) {
+    checkInfo(program, type, operation, Program);
+}
+
+void ShaderUtils::checkInfo(const unsigned int handle, const int type,
+                            const std::string &operation, CheckType checkType) {
+    GLint status = GL_TRUE;
+    switch (checkType) {
+        case Program:
+            glGetProgramiv(handle, type, &status);
+            break;
+        case Shader:
+            glGetShaderiv(handle, type, &status);
+            break;
+        default:
+            break;
+    }
+    if (status == GL_TRUE) {
+        ALOGD("[%s] success, no need check log", operation.c_str());
+        return;
+    }
+    GLint infoLength = 0;
+    switch (checkType) {
+        case Program:
+            glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &infoLength);
+            break;
+        case Shader:
+            glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &infoLength);
+            break;
+        default:
+            break;
+    }
+    if (infoLength == 0) {
+        ALOGE("get info log length 0");
+        return;
+    }
+    char *infoBuffer = (char *) malloc(infoLength);
+    if (infoBuffer == nullptr) {
+        ALOGE("malloc info log buffer failed");
+        return;
+    }
+    switch (checkType) {
+        case Program:
+            glGetProgramInfoLog(handle, infoLength, nullptr, infoBuffer);
+            break;
+        case Shader:
+            glGetShaderInfoLog(handle, infoLength, nullptr, infoBuffer);
+            break;
+        default:
+            break;
+    }
+    ALOGE("[%s] failed, msg %s", operation.c_str(), infoBuffer);
+    free(infoBuffer);
+    infoBuffer = nullptr;
 }

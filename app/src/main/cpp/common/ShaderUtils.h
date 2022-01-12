@@ -7,6 +7,7 @@
 
 #include <GLES3/gl3.h>
 #include "Log.h"
+#include <string>
 
 class ShaderUtils {
 public:
@@ -46,21 +47,47 @@ private:
     // 错误的最大打印次数
     static constexpr int MAX_ERROR = 10;
 
-    inline static const char *parseForString(int key) {
-        switch (key) {
-            case GL_VERTEX_SHADER:
-                return "";
-            default:
-                return "";
-        }
-    }
-
     /**
      * 检查操作是否发生异常
      *
      * @param operation                 某项操作，仅用作 log 打印
      * */
     static void checkError(const char *operation);
+
+    /**
+     * 查询 shader 信息
+     *
+     * @param shader                    shader 的句柄
+     * @param type                      检查类型，当前仅确保支持 [GL_COMPILE_STATUS]
+     * @param operation                 检查操作信息的说明字段，仅打 log 用
+     * */
+    static void checkShaderInfo(const unsigned int shader,
+                                const int type, const std::string &operation);
+
+    /**
+     * 查询程序信息
+     *
+     * @param program                   program 的句柄
+     * @param type                      检查类型，当前仅确保支持 [GL_LINK_STATUS]
+     * @param operation                 检查操作信息的说明字段，仅打 log 用
+     * */
+    static void checkProgramInfo(const unsigned int program,
+                                 const int type, const std::string &operation);
+
+private:
+    enum CheckType {
+        Shader,
+        Program,
+    };
+
+    /**
+     * 检查 shader 代码的执行信息
+     * 如：
+     *  1. 程序是否链接成功，如果失败，打印出失败信息
+     *  2. shader 是否编译成功，如果失败，打印出失败信息
+     * */
+    static void checkInfo(const unsigned int handle,
+                          const int type, const std::string &operation, CheckType checkType);
 };
 
 
