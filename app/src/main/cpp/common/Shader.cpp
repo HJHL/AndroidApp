@@ -2,6 +2,8 @@
 // Created by Joe.Lee on 2022/1/12.
 //
 
+#define LOG_TAG "Shader"
+
 #include "Shader.h"
 #include "ShaderUtils.h"
 #include <sstream>

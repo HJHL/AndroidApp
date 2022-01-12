@@ -8,6 +8,7 @@
 #include "shape/Triangle.h"
 #include <GLES3/gl3.h>
 #include "glm/glm.hpp"
+#include "shape/CustomShape.h"
 
 NativeRender *NativeRender::CreateInstance() {
     NativeRender *nativeRender = new NativeRender();

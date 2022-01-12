@@ -1,6 +1,7 @@
 add_library(shape SHARED
         Triangle.cpp
         IShape.cpp
+        CustomShape.cpp
         )
 
 target_include_directories(shape PRIVATE

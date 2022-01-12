@@ -7,14 +7,20 @@ import android.view.KeyEvent
 import android.webkit.WebViewClient
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import me.lijiahui.androidapp.base.BaseActivity
 import me.lijiahui.androidapp.databinding.ActivityMainBinding
+import java.io.File
 
 class MainActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
         const val URL = "https://www.baidu.com"
+        private const val VERTEX_CODE_FILE_NAME = "custom_vertex_code.glsl"
+        private const val FRAGMENT_CODE_FILE_NAME = "custom_fragment_code.glsl"
     }
 
     private var _binding: ActivityMainBinding? = null
@@ -73,6 +79,26 @@ class MainActivity : BaseActivity() {
         setContentView(mBinding.root)
         initView()
         initListener()
+        // 拷贝 shader 代码到 /data/data/<package-name>/files/ 目录下
+        // TODO：找到更好的方式存放 shader 代码
+        GlobalScope.launch(Dispatchers.IO) {
+            val forceUpdate = true
+            val vertexFile = File(filesDir, VERTEX_CODE_FILE_NAME)
+            val fragmentFile = File(filesDir, FRAGMENT_CODE_FILE_NAME)
+            if (!vertexFile.exists() || forceUpdate) {
+                File(filesDir, VERTEX_CODE_FILE_NAME).writeBytes(
+                    assets.open(VERTEX_CODE_FILE_NAME).readBytes()
+                )
+            }
+            if (!fragmentFile.exists() || forceUpdate) {
+                File(filesDir, FRAGMENT_CODE_FILE_NAME).writeBytes(
+                    assets.open(
+                        FRAGMENT_CODE_FILE_NAME
+                    ).readBytes()
+                )
+            }
+            Log.d(TAG, "write file success")
+        }
     }
 
     override fun onStart() {
