@@ -20,6 +20,9 @@
 #define ALOGI(fmt, ...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, \
     "%s %d %s " fmt, __FILE_NAME__, __LINE__, __FUNCTION__, ##__VA_ARGS__)
 
+#define ALOGW(fmt, ...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, \
+    "%s %d %s " fmt, __FILE_NAME__, __LINE__, __FUNCTION__, ##__VA_ARGS__)
+
 #define ALOGE(fmt, ...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, \
     "%s %d %s " fmt, __FILE_NAME__, __LINE__, __FUNCTION__, ##__VA_ARGS__)
 
