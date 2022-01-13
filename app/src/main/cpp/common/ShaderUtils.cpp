@@ -4,6 +4,8 @@
 #define LOG_TAG "ShaderUtils"
 
 #include "ShaderUtils.h"
+#include "OsUtils.h"
+#include "third_party/stb/stb_image.h"
 #include <malloc.h>
 
 // 异常时（如图像没有绘制），取消掉下面注释的开关
@@ -159,4 +161,23 @@ void ShaderUtils::checkInfo(const unsigned int handle, const int type,
     ALOGE("[%s] failed, msg %s", operation.c_str(), infoBuffer);
     free(infoBuffer);
     infoBuffer = nullptr;
+}
+
+int ShaderUtils::LoadImageToTexture(const std::string &imagePath) {
+    if (!OsUtils::isFileExist(imagePath)) {
+        ALOGE("image file can not access, %s", imagePath.c_str());
+        return -1;
+    }
+    int width = 0, height = 0, channels = 0;
+    unsigned char *imageData = nullptr;
+    imageData = stbi_load(imagePath.c_str(), &width, &height, &channels, 0);
+    ALOGD("image %dx%d channel %d address %p", width, height, channels, imageData);
+    if (imageData == nullptr) {
+        ALOGE("load image failed");
+        return -2;
+    }
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);
+    stbi_image_free(imageData);
+    imageData = nullptr;
+    return 0;
 }

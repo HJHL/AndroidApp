@@ -17,11 +17,18 @@ public:
     void draw() override;
 
 private:
+    static constexpr bool DEBUG = false;
     static const std::string VERTEX_PATH;
     static const std::string FRAGMENT_PATH;
-    Shader *m_shader;
+    static const std::string IMAGE_FILE_PATH;
+    static const std::string IMAGE_FILE_PATH1;
+    Shader *m_pShader;
+    unsigned int m_texture[2] = {0};
+    unsigned int m_VAO = 0;
 
     int init();
+
+    int initOpenGL();
 };
 
 

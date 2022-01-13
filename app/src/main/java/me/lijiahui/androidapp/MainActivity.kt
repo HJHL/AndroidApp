@@ -22,6 +22,7 @@ class MainActivity : BaseActivity() {
         private const val VERTEX_CODE_FILE_NAME = "custom_vertex_code.glsl"
         private const val FRAGMENT_CODE_FILE_NAME = "custom_fragment_code.glsl"
         private const val WALL_FILE_NAME = "wall.jpeg"
+        private const val FACE_FILE_NAME = "awesomeface.png"
     }
 
     private var _binding: ActivityMainBinding? = null
@@ -83,23 +84,22 @@ class MainActivity : BaseActivity() {
             val vertexFile = File(filesDir, VERTEX_CODE_FILE_NAME)
             val fragmentFile = File(filesDir, FRAGMENT_CODE_FILE_NAME)
             val wallFile = File(filesDir, WALL_FILE_NAME)
+            val faceFile = File(filesDir, FACE_FILE_NAME)
             if (!vertexFile.exists() || forceUpdate) {
-                File(filesDir, VERTEX_CODE_FILE_NAME).writeBytes(
-                    assets.open(VERTEX_CODE_FILE_NAME).readBytes()
-                )
+                vertexFile.writeBytes(assets.open(VERTEX_CODE_FILE_NAME).readBytes())
                 Log.i(TAG, "write vertex file success")
             }
             if (!fragmentFile.exists() || forceUpdate) {
-                File(filesDir, FRAGMENT_CODE_FILE_NAME).writeBytes(
-                    assets.open(
-                        FRAGMENT_CODE_FILE_NAME
-                    ).readBytes()
-                )
+                fragmentFile.writeBytes(assets.open(FRAGMENT_CODE_FILE_NAME).readBytes())
                 Log.i(TAG, "write fragment file success")
             }
             if (!wallFile.exists() || forceUpdate) {
                 wallFile.writeBytes(assets.open(WALL_FILE_NAME).readBytes())
                 Log.i(TAG, "write wall file success")
+            }
+            if (!faceFile.exists() || forceUpdate) {
+                faceFile.writeBytes(assets.open(FACE_FILE_NAME).readBytes())
+                Log.i(TAG, "write face file success")
             }
         }
     }

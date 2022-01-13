@@ -4,6 +4,7 @@ add_library(common SHARED
         ShaderUtils.cpp
         Shader.cpp
         std_image.cpp
+        OsUtils.cpp
         )
 
 target_link_libraries(common PUBLIC

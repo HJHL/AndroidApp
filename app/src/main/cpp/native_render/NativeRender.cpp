@@ -40,7 +40,7 @@ void NativeRender::SetImageData(int format, int width, int height, const char *b
 }
 
 NativeRender::NativeRender() {
-    m_shape = new Triangle();
+    m_shape = new CustomShape();
 }
 
 NativeRender::~NativeRender() {
