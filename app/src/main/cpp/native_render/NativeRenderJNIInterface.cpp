@@ -11,6 +11,7 @@
 #define NATIVE_RENDER_CLASS_NAME "me/lijiahui/androidapp/widget/MyNativeRender"
 
 static NativeRender *g_nativeRender = nullptr;
+static const bool DEBUG = false;
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,6 +37,7 @@ JNIEXPORT void JNICALL native_OnUninit(JNIEnv *env, jobject clazz) {
 }
 
 JNIEXPORT void JNICALL native_OnSurfaceCreated(JNIEnv *env, jobject clazz) {
+    ALOGD("E");
     if (g_nativeRender == nullptr) {
         ALOGE("onSurfaceCreated failed, can not get native render");
         return;
@@ -56,6 +58,9 @@ JNIEXPORT void JNICALL native_OnSurfaceChanged(JNIEnv *env, jobject clazz,
 JNIEXPORT void JNICALL native_OnDrawFrame(JNIEnv
                                           *env,
                                           jobject clazz) {
+    if (DEBUG) {
+        ALOGD("E");
+    }
     if (g_nativeRender == nullptr) {
         //ALOGE("onDrawFrame failed, can not get native render");
         return;
@@ -65,6 +70,9 @@ JNIEXPORT void JNICALL native_OnDrawFrame(JNIEnv
 
 JNIEXPORT void JNICALL native_setImageData(JNIEnv *env, jobject clazz,
                                            jint format, jint width, jint height, jbyteArray bytes) {
+    if (DEBUG) {
+        ALOGD("E");
+    }
     const int len = env->GetArrayLength(bytes);
     char *buf = new char[len];
     env->GetByteArrayRegion(bytes, 0, len, (jbyte *) (buf));
