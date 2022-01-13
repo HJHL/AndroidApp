@@ -10,6 +10,8 @@ public:
     virtual ~IShape();
 
     virtual void draw() = 0;
+
+    virtual void setRenderScreenSize(const int width, const int height) = 0;
 };
 
 #endif //ANDROIDAPP_ISHAPE_H

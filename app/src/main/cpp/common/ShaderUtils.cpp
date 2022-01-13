@@ -170,6 +170,8 @@ int ShaderUtils::LoadImageToTexture(const std::string &imagePath) {
     }
     int width = 0, height = 0, channels = 0;
     unsigned char *imageData = nullptr;
+    // 载入图片前，绕 Y 轴翻转
+    stbi_set_flip_vertically_on_load(true);
     imageData = stbi_load(imagePath.c_str(), &width, &height, &channels, 0);
     ALOGD("image %dx%d channel %d address %p", width, height, channels, imageData);
     if (imageData == nullptr) {

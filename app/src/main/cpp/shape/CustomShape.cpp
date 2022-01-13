@@ -7,6 +7,8 @@
 #include "common/Common.h"
 #include "third_party/stb/stb_image.h"
 #include "common/ShaderUtils.h"
+#include <chrono>
+#include <cinttypes>
 
 const std::string CustomShape::VERTEX_PATH = DIR_DATA + "/files/custom_vertex_code.glsl";
 const std::string CustomShape::FRAGMENT_PATH = DIR_DATA + "/files/custom_fragment_code.glsl";
@@ -43,10 +45,10 @@ int CustomShape::init() {
 int CustomShape::initOpenGL() {
     const float vertices[] = {
             //     坐标                颜色          纹理坐标
-            -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // 左下
-            0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // 右下
-            0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 右上
-            -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f // 左上
+            -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // 左下
+            1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // 右下
+            1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 右上
+            -1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f // 左上
     };
     const unsigned int indices[] = {
             0, 1, 2,
@@ -107,9 +109,16 @@ int CustomShape::initOpenGL() {
     // 为当前纹理自动生成多级渐远纹理
     glGenerateMipmap(GL_TEXTURE_2D);
 
+    // setInt 前一定要调用 glUseProgram！！！
     m_pShader->use();
+    // 告诉 texture0 变量绑定的是 texture0
     m_pShader->setInt("texture0", 0);
+    // 告诉 texture0 变量绑定的是 texture1
     m_pShader->setInt("texture1", 1);
+    const glm::vec4 color = {
+            0.2125, 0.7154, 0.0721, 1.0f
+    };
+    m_pShader->setVec4("color", color);
     return 0;
 }
 
@@ -117,9 +126,17 @@ void CustomShape::draw() {
     if (DEBUG) {
         ALOGD("E");
     }
+    //glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
     m_pShader->use();
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, m_texture[0]);
     glBindTexture(GL_TEXTURE_2D, m_texture[1]);
     glBindVertexArray(m_VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+void CustomShape::setRenderScreenSize(const int width, const int height) {
+    ALOGD("render screen dimension %dx%d", width, height);
+    m_renderScreenWidth = width;
+    m_renderScreenHeight = height;
 }

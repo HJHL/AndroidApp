@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.webkit.WebViewClient
+import android.widget.Toast
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +44,7 @@ class MainActivity : BaseActivity() {
             Log.d(TAG, "js enabled ${settings.javaScriptEnabled}")
         }
         mBinding.surfaceView.apply {
-            renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
+            renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
         }
     }
 
@@ -101,11 +102,15 @@ class MainActivity : BaseActivity() {
                 faceFile.writeBytes(assets.open(FACE_FILE_NAME).readBytes())
                 Log.i(TAG, "write face file success")
             }
+            mainExecutor.execute {
+                Toast.makeText(MyApplication.app, "All files copied!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun doAfterCreate() {
-        copyAssetsToFileDir()
+        // 调试方便，Activity 创建后就将文件拷贝到目录
+        copyAssetsToFileDir(true)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
