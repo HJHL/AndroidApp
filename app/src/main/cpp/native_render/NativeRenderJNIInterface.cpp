@@ -1,12 +1,13 @@
 //
 // Created by Joe.Lee on 2022/1/8.
 //
+#define LOG_TAG "NativeRenderJNIInterface"
+
 #include "NativeRender.h"
 #include "jni.h"
 #include "common/Log.h"
 #include "common/JNIUtils.h"
 
-#define LOG_TAG "NativeRenderJNIInterface"
 #define NATIVE_RENDER_CLASS_NAME "me/lijiahui/androidapp/widget/MyNativeRender"
 
 static NativeRender *g_nativeRender = nullptr;
