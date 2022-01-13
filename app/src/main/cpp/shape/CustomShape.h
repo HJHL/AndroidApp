@@ -16,12 +16,24 @@ public:
 
     void draw() override;
 
+    void setRenderScreenSize(const int width, const int height) override;
+
 private:
+    static constexpr bool DEBUG = false;
     static const std::string VERTEX_PATH;
     static const std::string FRAGMENT_PATH;
-    Shader *m_shader;
+    static const std::string IMAGE_FILE_PATH;
+    static const std::string IMAGE_FILE_PATH1;
+    int m_renderScreenWidth;
+    int m_renderScreenHeight;
+    Shader *m_pShader;
+    unsigned int m_texture[2] = {0};
+    unsigned int m_VAO = 0;
+    unsigned int m_FBO = 0;
 
     int init();
+
+    int initOpenGL();
 };
 
 

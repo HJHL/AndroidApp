@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.webkit.WebViewClient
+import android.widget.Toast
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +22,8 @@ class MainActivity : BaseActivity() {
         const val URL = "https://www.baidu.com"
         private const val VERTEX_CODE_FILE_NAME = "custom_vertex_code.glsl"
         private const val FRAGMENT_CODE_FILE_NAME = "custom_fragment_code.glsl"
+        private const val WALL_FILE_NAME = "wall.jpeg"
+        private const val FACE_FILE_NAME = "awesomeface.png"
     }
 
     private var _binding: ActivityMainBinding? = null
@@ -41,7 +44,7 @@ class MainActivity : BaseActivity() {
             Log.d(TAG, "js enabled ${settings.javaScriptEnabled}")
         }
         mBinding.surfaceView.apply {
-            renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
+            renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
         }
     }
 
@@ -50,7 +53,8 @@ class MainActivity : BaseActivity() {
      * */
     private fun initListener() {
         mBinding.mrb.setOnClickListener {
-            mBinding.web.loadUrl(URL)
+//            mBinding.web.loadUrl(URL)
+            copyAssetsToFileDir(true)
         }
         referrerClient.startConnection(object : InstallReferrerStateListener {
             override fun onInstallReferrerSetupFinished(responseCode: Int) {
@@ -73,32 +77,49 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    private fun copyAssetsToFileDir(forceUpdate: Boolean = false) {
+        // 拷贝 shader 代码到 /data/data/<package-name>/files/ 目录下
+        // TODO：找到更好的方式存放 shader 代码
+        GlobalScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "force update? $forceUpdate")
+            val vertexFile = File(filesDir, VERTEX_CODE_FILE_NAME)
+            val fragmentFile = File(filesDir, FRAGMENT_CODE_FILE_NAME)
+            val wallFile = File(filesDir, WALL_FILE_NAME)
+            val faceFile = File(filesDir, FACE_FILE_NAME)
+            if (!vertexFile.exists() || forceUpdate) {
+                vertexFile.writeBytes(assets.open(VERTEX_CODE_FILE_NAME).readBytes())
+                Log.i(TAG, "write vertex file success")
+            }
+            if (!fragmentFile.exists() || forceUpdate) {
+                fragmentFile.writeBytes(assets.open(FRAGMENT_CODE_FILE_NAME).readBytes())
+                Log.i(TAG, "write fragment file success")
+            }
+            if (!wallFile.exists() || forceUpdate) {
+                wallFile.writeBytes(assets.open(WALL_FILE_NAME).readBytes())
+                Log.i(TAG, "write wall file success")
+            }
+            if (!faceFile.exists() || forceUpdate) {
+                faceFile.writeBytes(assets.open(FACE_FILE_NAME).readBytes())
+                Log.i(TAG, "write face file success")
+            }
+            mainExecutor.execute {
+                Toast.makeText(MyApplication.app, "All files copied!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun doAfterCreate() {
+        // 调试方便，Activity 创建后就将文件拷贝到目录
+        copyAssetsToFileDir(true)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
         initView()
         initListener()
-        // 拷贝 shader 代码到 /data/data/<package-name>/files/ 目录下
-        // TODO：找到更好的方式存放 shader 代码
-        GlobalScope.launch(Dispatchers.IO) {
-            val forceUpdate = true
-            val vertexFile = File(filesDir, VERTEX_CODE_FILE_NAME)
-            val fragmentFile = File(filesDir, FRAGMENT_CODE_FILE_NAME)
-            if (!vertexFile.exists() || forceUpdate) {
-                File(filesDir, VERTEX_CODE_FILE_NAME).writeBytes(
-                    assets.open(VERTEX_CODE_FILE_NAME).readBytes()
-                )
-            }
-            if (!fragmentFile.exists() || forceUpdate) {
-                File(filesDir, FRAGMENT_CODE_FILE_NAME).writeBytes(
-                    assets.open(
-                        FRAGMENT_CODE_FILE_NAME
-                    ).readBytes()
-                )
-            }
-            Log.d(TAG, "write file success")
-        }
+        doAfterCreate()
     }
 
     override fun onStart() {

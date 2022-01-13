@@ -33,6 +33,7 @@ void NativeRender::OnSurfaceCreated() {
 
 void NativeRender::OnSurfaceChanged(int width, int height) {
     glViewport(0, 0, width, height);
+    m_shape->setRenderScreenSize(width, height);
 }
 
 void NativeRender::SetImageData(int format, int width, int height, const char *bytes) {
@@ -40,7 +41,7 @@ void NativeRender::SetImageData(int format, int width, int height, const char *b
 }
 
 NativeRender::NativeRender() {
-    m_shape = new Triangle();
+    m_shape = new CustomShape();
 }
 
 NativeRender::~NativeRender() {
