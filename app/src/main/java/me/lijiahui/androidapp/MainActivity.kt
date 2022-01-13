@@ -21,6 +21,7 @@ class MainActivity : BaseActivity() {
         const val URL = "https://www.baidu.com"
         private const val VERTEX_CODE_FILE_NAME = "custom_vertex_code.glsl"
         private const val FRAGMENT_CODE_FILE_NAME = "custom_fragment_code.glsl"
+        private const val WALL_FILE_NAME = "wall.jpeg"
     }
 
     private var _binding: ActivityMainBinding? = null
@@ -50,7 +51,8 @@ class MainActivity : BaseActivity() {
      * */
     private fun initListener() {
         mBinding.mrb.setOnClickListener {
-            mBinding.web.loadUrl(URL)
+//            mBinding.web.loadUrl(URL)
+            copyAssetsToFileDir(true)
         }
         referrerClient.startConnection(object : InstallReferrerStateListener {
             override fun onInstallReferrerSetupFinished(responseCode: Int) {
@@ -73,22 +75,19 @@ class MainActivity : BaseActivity() {
         })
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(mBinding.root)
-        initView()
-        initListener()
+    private fun copyAssetsToFileDir(forceUpdate: Boolean = false) {
         // 拷贝 shader 代码到 /data/data/<package-name>/files/ 目录下
         // TODO：找到更好的方式存放 shader 代码
         GlobalScope.launch(Dispatchers.IO) {
-            val forceUpdate = true
+            Log.d(TAG, "force update? $forceUpdate")
             val vertexFile = File(filesDir, VERTEX_CODE_FILE_NAME)
             val fragmentFile = File(filesDir, FRAGMENT_CODE_FILE_NAME)
+            val wallFile = File(filesDir, WALL_FILE_NAME)
             if (!vertexFile.exists() || forceUpdate) {
                 File(filesDir, VERTEX_CODE_FILE_NAME).writeBytes(
                     assets.open(VERTEX_CODE_FILE_NAME).readBytes()
                 )
+                Log.i(TAG, "write vertex file success")
             }
             if (!fragmentFile.exists() || forceUpdate) {
                 File(filesDir, FRAGMENT_CODE_FILE_NAME).writeBytes(
@@ -96,9 +95,26 @@ class MainActivity : BaseActivity() {
                         FRAGMENT_CODE_FILE_NAME
                     ).readBytes()
                 )
+                Log.i(TAG, "write fragment file success")
             }
-            Log.d(TAG, "write file success")
+            if (!wallFile.exists() || forceUpdate) {
+                wallFile.writeBytes(assets.open(WALL_FILE_NAME).readBytes())
+                Log.i(TAG, "write wall file success")
+            }
         }
+    }
+
+    private fun doAfterCreate() {
+        copyAssetsToFileDir()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
+        initView()
+        initListener()
+        doAfterCreate()
     }
 
     override fun onStart() {
