@@ -20,6 +20,7 @@ class MyGLSurfaceView(context: Context, attributeSet: AttributeSet?) :
     constructor(context: Context) : this(context, null)
 
     val nativeRender: MyNativeRender
+    val myRender: MyRender
 
     var ratioWidth = 0
         private set
@@ -31,6 +32,7 @@ class MyGLSurfaceView(context: Context, attributeSet: AttributeSet?) :
         setEGLContextClientVersion(3)
         // 使用 native render 进行渲染
         nativeRender = MyNativeRender()
+        myRender = MyRender()
         setRenderer(this)
         // 设置渲染模式为持续渲染模式
         renderMode = RENDERMODE_CONTINUOUSLY
@@ -87,7 +89,7 @@ class MyGLSurfaceView(context: Context, attributeSet: AttributeSet?) :
     override fun surfaceDestroyed(holder: SurfaceHolder) {
         super.surfaceDestroyed(holder)
         Log.d(TAG, "surfaceDestroyed")
-        //nativeRender.native_OnUninit()
+//        nativeRender.native_OnUninit()
     }
 
     override fun finalize() {
