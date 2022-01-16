@@ -106,25 +106,23 @@ void CustomShape::draw() {
     }
     // 离屏渲染
     glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-    glEnable(GL_DEPTH_TEST);
     glClearColor(0.1, 0.2, 0.3, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     m_pShader->use();
     glBindVertexArray(m_VAO);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture1);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
     // 显示
     glBindFramebuffer(GL_FRAMEBUFFER, GL_NONE);
-    glDisable(GL_DEPTH_TEST);
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     m_pScreenShader->use();
     glBindVertexArray(m_VAO);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
 void CustomShape::setRenderScreenSize(const int width, const int height) {
