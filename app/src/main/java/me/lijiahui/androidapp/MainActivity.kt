@@ -2,6 +2,8 @@ package me.lijiahui.androidapp
 
 import android.opengl.GLSurfaceView
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.KeyEvent
 import android.webkit.WebViewClient
@@ -22,6 +24,8 @@ class MainActivity : BaseActivity() {
         const val URL = "https://www.baidu.com"
         private const val VERTEX_CODE_FILE_NAME = "custom_vertex_code.glsl"
         private const val FRAGMENT_CODE_FILE_NAME = "custom_fragment_code.glsl"
+        private const val SCREEN_VERTEX_FILE_NAME = "screen_vertex_shader.glsl"
+        private const val SCREEN_FRAGMENT_FILE_NAME = "screen_fragment_shader.glsl"
         private const val WALL_FILE_NAME = "wall.jpeg"
         private const val FACE_FILE_NAME = "awesomeface.png"
     }
@@ -44,7 +48,7 @@ class MainActivity : BaseActivity() {
             Log.d(TAG, "js enabled ${settings.javaScriptEnabled}")
         }
         mBinding.surfaceView.apply {
-            renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
+            renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
         }
     }
 
@@ -82,27 +86,30 @@ class MainActivity : BaseActivity() {
         // TODO：找到更好的方式存放 shader 代码
         GlobalScope.launch(Dispatchers.IO) {
             Log.d(TAG, "force update? $forceUpdate")
-            val vertexFile = File(filesDir, VERTEX_CODE_FILE_NAME)
-            val fragmentFile = File(filesDir, FRAGMENT_CODE_FILE_NAME)
-            val wallFile = File(filesDir, WALL_FILE_NAME)
-            val faceFile = File(filesDir, FACE_FILE_NAME)
-            if (!vertexFile.exists() || forceUpdate) {
-                vertexFile.writeBytes(assets.open(VERTEX_CODE_FILE_NAME).readBytes())
-                Log.i(TAG, "write vertex file success")
+            val fileList = arrayOf(
+                VERTEX_CODE_FILE_NAME,
+                FRAGMENT_CODE_FILE_NAME,
+                SCREEN_VERTEX_FILE_NAME,
+                SCREEN_FRAGMENT_FILE_NAME,
+                WALL_FILE_NAME,
+            )
+            fileList.forEach { fileName ->
+                val file = File(filesDir, fileName)
+                file.writeBytes(assets.open(fileName).readBytes())
             }
-            if (!fragmentFile.exists() || forceUpdate) {
-                fragmentFile.writeBytes(assets.open(FRAGMENT_CODE_FILE_NAME).readBytes())
-                Log.i(TAG, "write fragment file success")
-            }
-            if (!wallFile.exists() || forceUpdate) {
-                wallFile.writeBytes(assets.open(WALL_FILE_NAME).readBytes())
-                Log.i(TAG, "write wall file success")
-            }
-            if (!faceFile.exists() || forceUpdate) {
-                faceFile.writeBytes(assets.open(FACE_FILE_NAME).readBytes())
-                Log.i(TAG, "write face file success")
-            }
-            mainExecutor.execute {
+//            val assetFileList = assets.list("./")
+//            assetFileList?.let {
+//                it.forEach { fileName ->
+//                    Log.d(TAG, "find file: $fileName")
+//                    val file = File(filesDir, fileName)
+//                    if (!file.exists() || forceUpdate) {
+//                        file.writeBytes(assets.open(fileName).readBytes())
+//                        Log.d(TAG, "update file $fileName")
+//                    }
+//                }
+//                Log.d(TAG, "copy all file done")
+//            }
+            Handler(Looper.getMainLooper()).post {
                 Toast.makeText(MyApplication.app, "All files copied!", Toast.LENGTH_SHORT).show()
             }
         }

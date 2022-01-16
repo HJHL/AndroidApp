@@ -21,19 +21,33 @@ public:
 private:
     static constexpr bool DEBUG = false;
     static const std::string VERTEX_PATH;
+    static const std::string SCREEN_VERTEX_PATH;
     static const std::string FRAGMENT_PATH;
+    static const std::string SCREEN_FRAGMENT_PATH;
     static const std::string IMAGE_FILE_PATH;
     static const std::string IMAGE_FILE_PATH1;
     int m_renderScreenWidth;
     int m_renderScreenHeight;
     Shader *m_pShader;
-    unsigned int m_texture[2] = {0};
+    Shader *m_pScreenShader;
+    unsigned int m_texture;
     unsigned int m_VAO = 0;
     unsigned int m_FBO = 0;
+    unsigned int m_texture1;
 
     int init();
 
     int initOpenGL();
+
+    unsigned int createFramebuffer();
+
+    inline static void checkFramebuffer() {
+        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
+            ALOGD("frame buffer complete!");
+        } else {
+            ALOGE("frame buffer is not completed! error code %d", glGetError());
+        }
+    }
 };
 
 

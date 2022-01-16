@@ -44,15 +44,13 @@ public:
     static unsigned int LoadShader(const char *source, GLenum type);
 
     /**
-     * 加载图片到 texture（仅 2D）
-     *
-     * 使用前需要激活并绑定 texture！！！
+     * 创建一个 2D texture，并将图片加载上去
      *
      * @param imagePath                 图片文件路径
      *
-     * @return -1                       表示文件路径无法访问
+     * @return 返回 texture 的 handle
      * */
-    static int LoadImageToTexture(const std::string &imagePath);
+    static unsigned int LoadImageToTexture2D(const std::string &imagePath);
 
 private:
     // 错误的最大打印次数

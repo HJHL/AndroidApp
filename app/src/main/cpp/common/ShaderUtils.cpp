@@ -10,7 +10,7 @@
 
 // 异常时（如图像没有绘制），取消掉下面注释的开关
 // 线上环境禁止打开，因为 OpenGL 异常查询会让 CPU 与 GPU 间进行通信，频繁地进行会严重损耗性能
-//#define DEBUG
+#define DEBUG
 
 unsigned int ShaderUtils::LoadShader(const char *source, GLenum type) {
     if (source == nullptr) {
@@ -30,7 +30,16 @@ unsigned int ShaderUtils::LoadShader(const char *source, GLenum type) {
     glShaderSource(shaderHandle, 1, &source, nullptr);
     glCompileShader(shaderHandle);
 #ifdef DEBUG
-    checkShaderInfo(shaderHandle, GL_COMPILE_STATUS, "Compile shader");
+    std::string s;
+    if (type == GL_VERTEX_SHADER) {
+        s = "Compile vertex shader";
+    } else if (type == GL_FRAGMENT_SHADER) {
+        s = "Compile fragment shader";
+    } else {
+        s = "Compile shader";
+    }
+    ALOGD("[%s] check source %s", s.c_str(), source);
+    checkShaderInfo(shaderHandle, GL_COMPILE_STATUS, s);
 #endif
     return shaderHandle;
 }
@@ -163,23 +172,47 @@ void ShaderUtils::checkInfo(const unsigned int handle, const int type,
     infoBuffer = nullptr;
 }
 
-int ShaderUtils::LoadImageToTexture(const std::string &imagePath) {
+unsigned int ShaderUtils::LoadImageToTexture2D(const std::string &imagePath) {
     if (!OsUtils::isFileExist(imagePath)) {
         ALOGE("image file can not access, %s", imagePath.c_str());
-        return -1;
+        return INVALID_HANDLE;
     }
+    unsigned int textureId;
+    glGenTextures(1, &textureId);
     int width = 0, height = 0, channels = 0;
     unsigned char *imageData = nullptr;
-    // 载入图片前，绕 Y 轴翻转
-    stbi_set_flip_vertically_on_load(true);
+//     载入图片前，绕 Y 轴翻转
+//    stbi_set_flip_vertically_on_load(true);
     imageData = stbi_load(imagePath.c_str(), &width, &height, &channels, 0);
     ALOGD("image %dx%d channel %d address %p", width, height, channels, imageData);
     if (imageData == nullptr) {
         ALOGE("load image failed");
-        return -2;
+        glDeleteTextures(1, &textureId);
+        return INVALID_HANDLE;
     }
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);
+    GLenum format;
+    switch (channels) {
+        case 1:
+            format = GL_RED;
+            break;
+        case 3:
+            format = GL_RGB;
+            break;
+        case 4:
+            format = GL_RGBA;
+            break;
+        default:
+            format = GL_RGB;
+            break;
+    }
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, imageData);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     stbi_image_free(imageData);
     imageData = nullptr;
-    return 0;
+    return textureId;
 }

@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.version_kotlin = "1.5.30"
+    ext.version_kotlin = "1.6.10"
 
     repositories {
         // 使用阿里源加速构建依赖下载
@@ -41,7 +41,7 @@ ext {
     version_constrainedLayout = "2.1.2"
     version_lifecycle = "2.4.0"
     version_coroutines = "1.5.2"
-    version_room = "2.2.1"
+    version_room = "2.3.0"
     version_nav = ""
 }
 
