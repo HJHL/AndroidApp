@@ -16,4 +16,8 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="request_users">请求所有用户</string>
+    <string name="next_user">下一个用户</string>
+    <string name="delete_user">删除当前用户</string>
 </resources>
