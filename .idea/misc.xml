@@ -6,10 +6,13 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.40677083333333336" />
         <entry key="app/src/main/res/drawable/bg_btn_1.xml" value="0.3963541666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.3963541666666667" />
+        <entry key="app/src/main/res/layout/activity_camera.xml" value="0.37817028985507245" />
         <entry key="app/src/main/res/layout/activity_launch_mode.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_new.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/activity_new_word.xml" value="0.33469202898550726" />
+        <entry key="app/src/main/res/layout/activity_screen_recorder.xml" value="0.37604166666666666" />
+        <entry key="app/src/main/res/layout/activity_serialization.xml" value="0.21197916666666666" />
         <entry key="app/src/main/res/layout/content_launch_mode.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.3802083333333333" />
         <entry key="app/src/main/res/layout/fragment_title.xml" value="0.21510416666666668" />

@@ -54,6 +54,13 @@ android {
 }
 
 dependencies {
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+
+    // Gson
+    implementation "com.google.code.gson:gson:2.8.9"
+
     // Lottie
     def lottieVersion = "4.2.2"
     implementation "com.airbnb.android:lottie:$lottieVersion"
@@ -65,14 +72,12 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     kapt "androidx.room:room-compiler:$version_room"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
     implementation 'androidx.core:core-ktx:1.7.0'
 
     implementation "androidx.appcompat:appcompat:$rootProject.version_appCompat"
     implementation "androidx.activity:activity-ktx:$rootProject.version_activity"
 
     // kotlin components
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.version_coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.version_coroutines"
 
