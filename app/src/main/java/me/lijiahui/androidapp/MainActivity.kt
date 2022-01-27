@@ -16,6 +16,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.lijiahui.androidapp.base.BaseActivity
 import me.lijiahui.androidapp.databinding.ActivityMainBinding
+import me.lijiahui.androidapp.demo.FFMpegActivity
 import me.lijiahui.androidapp.demo.serialization.SerializationActivity
 import java.io.File
 
@@ -59,7 +60,7 @@ class MainActivity : BaseActivity() {
      * */
     private fun initListener() {
         mBinding.mrb.setOnClickListener {
-            startActivity(Intent(this, SerializationActivity::class.java))
+            startActivity(Intent(this, FFMpegActivity::class.java))
 //            mBinding.web.loadUrl(URL)
             copyAssetsToFileDir(true)
         }

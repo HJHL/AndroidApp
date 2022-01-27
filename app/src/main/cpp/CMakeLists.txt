@@ -15,6 +15,8 @@ set(CMAKE_CXX_STANDARD 17)
 add_subdirectory(common)
 add_subdirectory(native_render)
 add_subdirectory(shape)
+add_subdirectory(jni)
+add_subdirectory(third_party/ffmpeg)
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
