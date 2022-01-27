@@ -28,4 +28,10 @@
 
     </LinearLayout>
 
+
+    <me.lijiahui.androidapp.ui.GridLines
+        android:id="@+id/grid_line"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

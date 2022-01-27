@@ -1,5 +1,6 @@
 package me.lijiahui.androidapp.demo
 
+import android.graphics.RectF
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
@@ -36,6 +37,14 @@ class FFMpegActivity : AppCompatActivity() {
         mBinding.tvMmpegDecodeInfo.apply {
             text = native_decodec_info()
             movementMethod = ScrollingMovementMethod()
+        }
+        mBinding.gridLine.post {
+            mBinding.gridLine.mDrawBounds = RectF(
+                0.0F,
+                0.0F,
+                mBinding.gridLine.width.toFloat(),
+                mBinding.gridLine.height.toFloat()
+            )
         }
     }
 
