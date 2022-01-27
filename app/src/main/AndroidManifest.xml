@@ -18,16 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidApp">
         <activity
-            android:name=".demo.serialization.SerializationActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".MainActivity"
+            android:name=".demo.DemoActivity"
             android:exported="true"
             android:launchMode="singleInstance">
             <intent-filter>
@@ -36,6 +27,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".demo.FFMpegActivity"
+            android:exported="false" />
+        <activity
+            android:name=".demo.serialization.SerializationActivity"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleInstance" />
     </application>
 
 </manifest>
