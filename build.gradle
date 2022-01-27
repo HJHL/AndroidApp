@@ -43,6 +43,8 @@ ext {
     version_coroutines = "1.6.0"
     version_room = "2.4.1"
     version_nav = ""
+    exoplayerVersion = "2.16.1"
+    lottieVersion = "4.2.2"
 }
 
 task clean(type: Delete) {
