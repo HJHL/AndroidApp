@@ -3,4 +3,7 @@
     <item
         android:id="@+id/menu_id_exo"
         android:title="@string/str_menu_exo" />
+    <item
+        android:id="@+id/menu_id_ffmpeg"
+        android:title="@string/str_menu_ffmpeg" />
 </menu>

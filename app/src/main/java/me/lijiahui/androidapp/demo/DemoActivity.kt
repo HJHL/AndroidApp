@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import me.lijiahui.androidapp.R
 import me.lijiahui.androidapp.databinding.ActivityDemoBinding
 import me.lijiahui.androidapp.demo.exoplayer.ExoFragment
+import me.lijiahui.androidapp.demo.ffmpeg.FfmpegFragment
 
 class DemoActivity : AppCompatActivity() {
     private val mBinding by lazy(LazyThreadSafetyMode.NONE) {
@@ -33,6 +34,9 @@ class DemoActivity : AppCompatActivity() {
         when (menuId) {
             R.id.menu_id_exo -> {
                 ExoFragment()
+            }
+            R.id.menu_id_ffmpeg -> {
+                FfmpegFragment()
             }
             else -> null
         }?.let {

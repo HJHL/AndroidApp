@@ -22,4 +22,5 @@
     <string name="delete_user">删除当前用户</string>
 
     <string name="str_menu_exo">ExoPlayer</string>
+    <string name="str_menu_ffmpeg">FFMpeg</string>
 </resources>

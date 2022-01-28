@@ -29,9 +29,6 @@
         </activity>
 
         <activity
-            android:name=".demo.FFMpegActivity"
-            android:exported="false" />
-        <activity
             android:name=".demo.serialization.SerializationActivity"
             android:exported="true">
 
