@@ -19,6 +19,37 @@ extern "C" {
 #include "libavcodec/avcodec.h"
 #include <jni.h>
 
+std::string getCodecInfo(const bool encoder = false) {
+    std::string result;
+    void *i = nullptr;
+    while (const AVCodec *codec = av_codec_iterate(&i)) {
+        if (av_codec_is_encoder(codec)) {
+            if (encoder) {
+                result.append(codec->name);
+                result.append("\n");
+            }
+        } else if (av_codec_is_decoder(codec)) {
+            if (!encoder) {
+                result.append(codec->name);
+                result.append("\n");
+            }
+        }
+    }
+    return result;
+}
+
+JNIEXPORT jstring JNICALL native_getEncoderInfo(JNIEnv *env, jclass clazz) {
+    std::string result;
+    result.append(getCodecInfo(true));
+    return env->NewStringUTF(result.c_str());
+}
+
+JNIEXPORT jstring JNICALL native_getDecoderInfo(JNIEnv *env, jclass clazz) {
+    std::string result;
+    result.append(getCodecInfo(false));
+    return env->NewStringUTF(result.c_str());
+}
+
 JNIEXPORT jstring JNICALL native_getInfo(JNIEnv *env, jclass clazz) {
     std::string result("FFMpeg info: \n");
     result.append("avcodec version: ");
@@ -57,7 +88,9 @@ JNIEXPORT jstring JNICALL native_getInfo(JNIEnv *env, jclass clazz) {
 }
 
 static JNINativeMethod g_ffmpegNativeMethods[] = {
-        {"native_getInfo", "()Ljava/lang/String;", (void *) native_getInfo},
+        {"native_getInfo",        "()Ljava/lang/String;", (void *) native_getInfo},
+        {"native_getEncoderInfo", "()Ljava/lang/String;", (void *) native_getEncoderInfo},
+        {"native_getDecoderInfo", "()Ljava/lang/String;", (void *) native_getDecoderInfo},
 };
 
 jint JNI_OnLoad(JavaVM *jvm, void *p) {

@@ -6,4 +6,10 @@
     <item
         android:id="@+id/menu_id_ffmpeg"
         android:title="@string/str_menu_ffmpeg" />
+    <item
+        android:id="@+id/menu_id_screen_recorder"
+        android:title="@string/str_menu_screen_recorder" />
+    <item
+        android:id="@+id/menu_id_floating_window"
+        android:title="@string/str_menu_floating_window" />
 </menu>

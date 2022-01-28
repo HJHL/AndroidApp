@@ -8,6 +8,8 @@ import me.lijiahui.androidapp.R
 import me.lijiahui.androidapp.databinding.ActivityDemoBinding
 import me.lijiahui.androidapp.demo.exoplayer.ExoFragment
 import me.lijiahui.androidapp.demo.ffmpeg.FfmpegFragment
+import me.lijiahui.androidapp.demo.floating.FloatingFragment
+import me.lijiahui.androidapp.demo.screen_recorder.ScreenRecorderFragment
 
 class DemoActivity : AppCompatActivity() {
     private val mBinding by lazy(LazyThreadSafetyMode.NONE) {
@@ -37,6 +39,12 @@ class DemoActivity : AppCompatActivity() {
             }
             R.id.menu_id_ffmpeg -> {
                 FfmpegFragment()
+            }
+            R.id.menu_id_screen_recorder -> {
+                ScreenRecorderFragment()
+            }
+            R.id.menu_id_floating_window -> {
+                FloatingFragment()
             }
             else -> null
         }?.let {

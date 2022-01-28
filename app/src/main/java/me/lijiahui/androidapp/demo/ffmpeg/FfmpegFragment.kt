@@ -1,6 +1,11 @@
 package me.lijiahui.androidapp.demo.ffmpeg
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,9 +37,29 @@ class FfmpegFragment : Fragment() {
 
     private external fun native_getInfo(): String
 
+    private external fun native_getEncoderInfo(): String
+
+    private external fun native_getDecoderInfo(): String
+
+    @SuppressLint("SetTextI18n")
     private fun initView() {
         mBinding.tvInfoDisplay.apply {
-            text = native_getInfo()
+            text = "${native_getInfo()}\n" +
+                    "Encoder info: ${native_getEncoderInfo()}\n" +
+                    "Decoder info: ${native_getDecoderInfo()}"
+            movementMethod = ScrollingMovementMethod()
+        }
+        mBinding.jumpToMarket.apply {
+            val pkg = "com.gorgeous.lite"
+            setOnClickListener {
+                kotlin.runCatching {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$pkg")))
+                }.onSuccess {
+
+                }.onFailure {
+
+                }
+            }
         }
     }
 
@@ -43,7 +68,11 @@ class FfmpegFragment : Fragment() {
         private const val JNI_LIB_NAME = "jni_ffmpeg"
 
         init {
-            System.loadLibrary(JNI_LIB_NAME)
+            try {
+                System.loadLibrary(JNI_LIB_NAME)
+            } catch (e: Exception) {
+                Log.d(TAG, e.message, e)
+            }
         }
     }
 }
