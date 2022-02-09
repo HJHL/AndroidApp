@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <me.lijiahui.androidapp.ui.AutoFitSurfaceView
+        android:id="@+id/view_finder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/open_camera"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/open_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/start_record"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/start_record"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/start_record"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/stop_record"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/open_camera" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/stop_record"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/stop_record"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/close_camera"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/start_record" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/close_camera"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/close_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/stop_record" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

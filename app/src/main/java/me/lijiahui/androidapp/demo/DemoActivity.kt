@@ -11,6 +11,7 @@ import me.lijiahui.androidapp.demo.compose.ComposeActivity
 import me.lijiahui.androidapp.demo.exoplayer.ExoFragment
 import me.lijiahui.androidapp.demo.ffmpeg.FfmpegFragment
 import me.lijiahui.androidapp.demo.floating.FloatingFragment
+import me.lijiahui.androidapp.demo.media_codec.MediaCodecFragment
 import me.lijiahui.androidapp.demo.screen_recorder.ScreenRecorderFragment
 
 class DemoActivity : AppCompatActivity() {
@@ -51,6 +52,9 @@ class DemoActivity : AppCompatActivity() {
             }
             R.id.menu_id_floating_window -> {
                 FloatingFragment()
+            }
+            R.id.menu_id_mediacodec -> {
+                MediaCodecFragment()
             }
             else -> null
         }?.let {
