@@ -27,4 +27,6 @@
     <string name="str_open_floating_window">打开悬浮窗</string>
     <string name="str_close_floating_window">关闭悬浮窗</string>
     <string name="str_menu_floating_window">悬浮窗</string>
+    <string name="str_menu_compose">Compose</string>
+    <string name="title_activity_compose">ComposeActivity</string>
 </resources>

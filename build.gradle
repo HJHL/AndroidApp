@@ -45,6 +45,7 @@ ext {
     version_nav = ""
     exoplayerVersion = "2.16.1"
     lottieVersion = "4.2.2"
+    version_compose = "1.2.0-alpha02"
 }
 
 task clean(type: Delete) {
