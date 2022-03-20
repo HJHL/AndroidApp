@@ -1,6 +1,5 @@
 package me.lijiahui.androidapp
 
-import android.content.Intent
 import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.os.Handler
@@ -16,8 +15,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.lijiahui.androidapp.base.BaseActivity
 import me.lijiahui.androidapp.databinding.ActivityMainBinding
-import me.lijiahui.androidapp.demo.FFMpegActivity
-import me.lijiahui.androidapp.demo.serialization.SerializationActivity
 import java.io.File
 
 class MainActivity : BaseActivity() {
@@ -60,7 +57,6 @@ class MainActivity : BaseActivity() {
      * */
     private fun initListener() {
         mBinding.mrb.setOnClickListener {
-            startActivity(Intent(this, FFMpegActivity::class.java))
 //            mBinding.web.loadUrl(URL)
             copyAssetsToFileDir(true)
         }

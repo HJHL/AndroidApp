@@ -3,4 +3,19 @@
     <item
         android:id="@+id/menu_id_exo"
         android:title="@string/str_menu_exo" />
+    <item
+        android:id="@+id/menu_id_ffmpeg"
+        android:title="@string/str_menu_ffmpeg" />
+    <item
+        android:id="@+id/menu_id_screen_recorder"
+        android:title="@string/str_menu_screen_recorder" />
+    <item
+        android:id="@+id/menu_id_floating_window"
+        android:title="@string/str_menu_floating_window" />
+    <item
+        android:id="@+id/menu_id_compose"
+        android:title="@string/str_menu_compose" />
+    <item
+        android:id="@+id/menu_id_mediacodec"
+        android:title="@string/str_menu_media_codec" />
 </menu>
