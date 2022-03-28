@@ -18,4 +18,7 @@
     <item
         android:id="@+id/menu_id_mediacodec"
         android:title="@string/str_menu_media_codec" />
+    <item
+        android:id="@+id/menu_id_hide_api"
+        android:title="@string/str_menu_hide_api" />
 </menu>

@@ -16,3 +16,13 @@ target_link_libraries(jni_ffmpeg PRIVATE
         swresample
         swscale
         )
+
+add_library(access_hide_api SHARED
+        AccessHiddenApi.cpp
+        )
+target_include_directories(access_hide_api PRIVATE
+        ${CMAKE_SOURCE_DIR}
+        )
+target_link_libraries(access_hide_api PRIVATE
+        common
+        )

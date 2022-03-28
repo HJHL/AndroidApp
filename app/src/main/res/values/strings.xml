@@ -30,6 +30,7 @@
     <string name="str_menu_compose">Compose</string>
     <string name="title_activity_compose">ComposeActivity</string>
     <string name="str_menu_media_codec">Media Codec</string>
+    <string name="str_menu_hide_api">Hidden Api</string>
     <string name="open_camera">打开摄像头</string>
     <string name="close_camera">关闭摄像头</string>
     <string name="start_record">开始录像</string>
